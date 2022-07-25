@@ -7,7 +7,7 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 const Create = ({ marketplace, nft }) => {
   const [image, setImage] = useState('')
   const [price, setPrice] = useState(null)
-  const [serial, setSerial] = useState(null)
+  const [serial, setSerial] = useState('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const uploadToIPFS = async (event) => {
@@ -24,9 +24,10 @@ const Create = ({ marketplace, nft }) => {
     }
   }
   const createNFT = async () => {
-    if (!image || !price || !name || !description) return
+    if (!image || !price || !name || !description || !serial ) return
     try{
-      const result = await client.add(JSON.stringify({image, price, name, description}))
+      const final=serial+name;
+      const result = await client.add(JSON.stringify({image, price, final, description}))
       mintThenList(result)
     } catch(error) {
       console.log("ipfs uri upload error: ", error)
