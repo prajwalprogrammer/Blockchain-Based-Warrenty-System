@@ -1,0 +1,9 @@
+/* eslint-disable jest/valid-expect */
+"overrides":{},
+{
+    "files": "*.spec.js",
+    "rules": 
+    {
+      "no-unused-expressions": 0
+    }
+}
