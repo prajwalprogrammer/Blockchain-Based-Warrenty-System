@@ -6,6 +6,7 @@ import {
 import Navigation from './Navbar';
 import Home from './Home.js'
 import Create from './Create.js'
+import Login from "./Login.js";
 import MyListedItems from './MyListedItems.js'
 import MyPurchases from './MyPurchases.js'
 import MarketplaceAbi from '../contractsData/Marketplace.json'
@@ -15,7 +16,6 @@ import NFTAddress from '../contractsData/NFT-address.json'
 import { useState } from 'react'
 import { ethers } from "ethers"
 import { Spinner } from 'react-bootstrap'
-
 import './App.css';
 
 function App() {
@@ -77,6 +77,10 @@ function App() {
               <Route path="/my-purchases" element={
                 <MyPurchases marketplace={marketplace} nft={nft} account={account} />
               } />
+              <Route path="/login" element={
+                <Login marketplace={marketplace} nft={nft} account={account} />
+              } />
+              
             </Routes>
           )}
         </div>

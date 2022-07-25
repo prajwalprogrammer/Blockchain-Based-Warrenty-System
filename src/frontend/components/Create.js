@@ -7,6 +7,7 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 const Create = ({ marketplace, nft }) => {
   const [image, setImage] = useState('')
   const [price, setPrice] = useState(null)
+  const [serial, setSerial] = useState(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const uploadToIPFS = async (event) => {
@@ -55,6 +56,7 @@ const Create = ({ marketplace, nft }) => {
                 name="file"
                 onChange={uploadToIPFS}
               />
+              <Form.Control onChange={(e) => setSerial(e.target.value)} size="lg" required type="number" placeholder="Serial Number" />
               <Form.Control onChange={(e) => setName(e.target.value)} size="lg" required type="text" placeholder="Name" />
               <Form.Control onChange={(e) => setDescription(e.target.value)} size="lg" required as="textarea" placeholder="Description" />
               <Form.Control onChange={(e) => setPrice(e.target.value)} size="lg" required type="number" placeholder="Price in ETH" />
