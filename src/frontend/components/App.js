@@ -45,6 +45,7 @@ function App() {
   const loadContracts = async (signer) => {
     // Get deployed copies of contracts
     const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
+    console.log(marketplace.itemCount());
     setMarketplace(marketplace)
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
     setNFT(nft)

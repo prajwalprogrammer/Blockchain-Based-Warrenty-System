@@ -6,11 +6,14 @@ const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
   const loadMarketplaceItems = async () => {
+    console.log('loading');
     // Load all unsold items
     const itemCount = await marketplace.itemCount()
+    // console.log(itemCount);
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
+      console.log(item);
       if (!item.sold) {
         // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)

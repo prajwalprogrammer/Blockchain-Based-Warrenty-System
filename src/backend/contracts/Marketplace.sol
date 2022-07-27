@@ -21,6 +21,12 @@ contract Marketplace is ReentrancyGuard {
         uint price;
         address payable seller;
         bool sold;
+        address UserAddress;
+    }
+
+    modifier onlyUser(uint itemId){
+        require(items[itemId].UserAddress==msg.sender);
+        _;
     }
 
     // itemId -> Item
@@ -48,7 +54,7 @@ contract Marketplace is ReentrancyGuard {
     }
 
     // Make item to offer on the marketplace
-    function makeItem(IERC721 _nft, uint _tokenId, uint _price) external nonReentrant {
+    function makeItem(IERC721 _nft, uint _tokenId, uint _price, address UserAddress) external nonReentrant {
         require(_price > 0, "Price must be greater than zero");
         // increment itemCount
         itemCount ++;
@@ -61,7 +67,8 @@ contract Marketplace is ReentrancyGuard {
             _tokenId,
             _price,
             payable(msg.sender),
-            false
+            false,
+            UserAddress
         );
         // emit Offered event
         emit Offered(
@@ -73,7 +80,7 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
-    function purchaseItem(uint _itemId) external payable nonReentrant {
+    function purchaseItem(uint _itemId) onlyUser(_itemId) external payable nonReentrant {
         uint _totalPrice = getTotalPrice(_itemId);
         Item storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
@@ -97,6 +104,9 @@ contract Marketplace is ReentrancyGuard {
         );
     }
     function getTotalPrice(uint _itemId) view public returns(uint){
-        return((items[_itemId].price*(10 + feePercent))/100);
+        return((items[_itemId].price*(100 + feePercent))/100);
     }
 }
+
+//Admin 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+//User(Account 6 first): 0xFABB0ac9d68B0B445fB7357272Ff202C5651694a
