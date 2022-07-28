@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
+import counter from './Create'
 
 const Home = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
@@ -38,9 +39,10 @@ const Home = ({ marketplace, nft }) => {
   }
 
   const buyMarketItem = async (item) => {
+    if(counter!=0){
     await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait()
     loadMarketplaceItems()
-  }
+  }}
 
   useEffect(() => {
     loadMarketplaceItems()
@@ -50,8 +52,18 @@ const Home = ({ marketplace, nft }) => {
       <h2>Loading...</h2>
     </main>
   )
+
+  function sayHello() {
+    alert('Make sure you claim correct warranty card with unique serial number sent on your mobile number.');
+    const newLocal = window.location.href = 'localhost:3000/login';
+    newLocal();
+}
+
   return (
     <div className="flex justify-center">
+      <body>
+          <marquee> Note: Before claiming the warranty, make sure you claim correct card with the unique serial number provided to you in message!</marquee>
+      </body>
       {items.length > 0 ?
         <div className="px-5 container">
           <Row xs={1} md={2} lg={4} className="g-4 py-5">
@@ -67,8 +79,9 @@ const Home = ({ marketplace, nft }) => {
                   </Card.Body>
                   <Card.Footer>
                     <div className='d-grid'>
-                      <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
-                        Buy for {ethers.utils.formatEther(item.totalPrice)} ETH
+                      <Button onClick={() => buyMarketItem(item) && sayHello()} variant="primary" size="lg">
+                        Claim your Warranty
+                         {/* for {ethers.utils.formatEther(item.totalPrice)} ETH */}
                       </Button>
                     </div>
                   </Card.Footer>

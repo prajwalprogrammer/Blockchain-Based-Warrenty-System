@@ -10,6 +10,9 @@ const Create = ({ marketplace, nft }) => {
   const [UserAddress, setUserAddress] = useState('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [expDate, setExpDate] = useState('')
+  // const [time,setTime] = useState('')
+
   const uploadToIPFS = async (event) => {
     event.preventDefault()
     const file = event.target.files[0]
@@ -23,16 +26,32 @@ const Create = ({ marketplace, nft }) => {
       }
     }
   }
+
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
+
+  var counter = 0;
+  if(expDate<=dateTime){
+    counter=1;
+  }
+  else{
+    counter=0;
+  }
+
   const createNFT = async () => {
+    if(counter!=0){
     if (!image || !UserAddress || !name || !description ) return
     try{
-      const final = name+serial;
-      const result = await client.add(JSON.stringify({image, UserAddress, name:final, description}))
+      const final = serial+' '+name;
+      const new_desc = 'Created on'+' '+dateTime+', '+description+', '+'and is Valid till :'+expDate;
+      const result = await client.add(JSON.stringify({image, UserAddress, name:final, description:new_desc}))
       mintThenList(result)
     } catch(error) {
       console.log("ipfs uri upload error: ", error)
     }
-  }
+  }}
   const mintThenList = async (result) => {
     const uri = `https://ipfs.infura.io/ipfs/${result.path}`
     // mint nft 
@@ -42,9 +61,12 @@ const Create = ({ marketplace, nft }) => {
     // approve marketplace to spend nft
     await(await nft.setApprovalForAll(marketplace.address, true)).wait()
     // add nft to marketplace
-    const listingPrice = ethers.utils.parseEther('0.01')
+    const listingPrice = ethers.utils.parseEther('0.0001')
     await(await marketplace.makeItem(nft.address, id, listingPrice, UserAddress)).wait()
   }
+
+
+2018-8-3 //11:12:40
   return (
     <div className="container-fluid mt-5">
       <div className="row">
@@ -61,6 +83,8 @@ const Create = ({ marketplace, nft }) => {
               <Form.Control onChange={(e) => setName(e.target.value)} size="lg" required type="text" placeholder="Name" />
               <Form.Control onChange={(e) => setDescription(e.target.value)} size="lg" required as="textarea" placeholder="Description" />
               <Form.Control onChange={(e) => setUserAddress(e.target.value)} size="lg" required type="text" placeholder="User Adress:" />
+              <Form.Control onChange={(e) => setExpDate(e.target.value)} size="lg" required type="date" placeholder="Set Expiry Date: " />
+              {/* <Form.Control onChange={(e) => setTime(e.target.value)} size="lg"/> */}
               <div className="d-grid px-0">
                 <Button onClick={createNFT} variant="primary" size="lg">
                   Create & List NFT!
