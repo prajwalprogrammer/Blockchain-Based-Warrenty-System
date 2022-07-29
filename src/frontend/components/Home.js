@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
-import counter from './Create'
-
-const Home = ({ marketplace, nft }) => {
+import './App.css';
+const Home = ({ marketplace, nft,account }) => {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
   const loadMarketplaceItems = async () => {
@@ -14,7 +13,7 @@ const Home = ({ marketplace, nft }) => {
     let items = []
     for (let i = 1; i <= itemCount; i++) {
       const item = await marketplace.items(i)
-      console.log(item);
+      console.log("1",item);
       if (!item.sold) {
         // get uri url from nft contract
         const uri = await nft.tokenURI(item.tokenId)
@@ -24,25 +23,30 @@ const Home = ({ marketplace, nft }) => {
         // get total price of item (item price + fee)
         const totalPrice = await marketplace.getTotalPrice(item.itemId)
         // Add item to items array
-        items.push({
+        console.log("metadata ",metadata)
+        if(account.toLowerCase()===item.UserAddress.toLowerCase()){
+
+          items.push({
           totalPrice,
           itemId: item.itemId,
           seller: item.seller,
+          buyer: item.UserAddress,
           name: metadata.name,
           description: metadata.description,
           image: metadata.image
         })
+        }
       }
     }
     setLoading(false)
     setItems(items)
+    console.log("first"+ JSON.stringify(items))
   }
 
   const buyMarketItem = async (item) => {
-    if(counter!=0){
     await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait()
     loadMarketplaceItems()
-  }}
+  }
 
   useEffect(() => {
     loadMarketplaceItems()

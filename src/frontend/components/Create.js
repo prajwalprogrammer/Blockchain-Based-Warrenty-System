@@ -32,16 +32,8 @@ const Create = ({ marketplace, nft }) => {
   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   var dateTime = date+' '+time;
 
-  var counter = 0;
-  if(expDate<=dateTime){
-    counter=1;
-  }
-  else{
-    counter=0;
-  }
 
   const createNFT = async () => {
-    if(counter!=0){
     if (!image || !UserAddress || !name || !description ) return
     try{
       const final = serial+' '+name;
@@ -51,7 +43,7 @@ const Create = ({ marketplace, nft }) => {
     } catch(error) {
       console.log("ipfs uri upload error: ", error)
     }
-  }}
+  }
   const mintThenList = async (result) => {
     const uri = `https://ipfs.infura.io/ipfs/${result.path}`
     // mint nft 
@@ -66,7 +58,6 @@ const Create = ({ marketplace, nft }) => {
   }
 
 
-2018-8-3 //11:12:40
   return (
     <div className="container-fluid mt-5">
       <div className="row">

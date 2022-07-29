@@ -5,6 +5,7 @@ import { Row, Col, Card } from 'react-bootstrap'
 export default function MyPurchases({ marketplace, nft, account }) {
   const [loading, setLoading] = useState(true)
   const [purchases, setPurchases] = useState([])
+  const [lastFive,setlastFive] = useState("")
   const loadPurchasedItems = async () => {
     // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
     const filter =  marketplace.filters.Bought(null,null,null,null,null,account)
@@ -21,6 +22,9 @@ export default function MyPurchases({ marketplace, nft, account }) {
       // get total price of item (item price + fee)
       const totalPrice = await marketplace.getTotalPrice(i.itemId)
       // define listed item object
+      setlastFive((metadata.description).slice((metadata.description).length - 10));
+      console.log("vf",metadata)
+      console.log("lastFive",lastFive)
       let purchasedItem = {
         totalPrice,
         price: i.price,
@@ -52,6 +56,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
                 <Card>
                   <Card.Img variant="top" src={item.image} />
                   <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
+                  <Card.Footer>VA : {lastFive}</Card.Footer>
                 </Card>
               </Col>
             ))}

@@ -1,0 +1,47 @@
+.success{
+  text-align: center;
+  padding: 40px 0;
+  background: #141E30;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2b3849, #080e18); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.successTit{
+  color: #88B04B;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.successContent{
+  color: #404F5E;
+  font-family: 'Raleway', sans-serif;
+  font-size:20px;
+  margin: 0;
+}
+
+.successCard{
+  background: white;
+  padding: 60px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 0 auto;
+  border: 2px solid black;
+}
+
+i {
+  color: #9ABC66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left:-15px;
+}
+
+.circle{
+  border-radius:200px; 
+  height:200px;
+  width:200px;
+  background: #F8FAF5;
+  margin:0 auto;
+  border: 2px solid black;
+}
